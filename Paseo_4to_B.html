@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paseo fin de año 4to B - 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+        /* --- ESTILOS GENERALES (SIN CAMBIOS) --- */
+        :root {
+            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-solid: #667eea;
+            --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%); z-index: -1; animation: float 20s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        header { text-align: center; padding: 4rem 2rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
+        header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--primary); }
+        header h1 { font-family: 'Poppins', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; background: var(--primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; animation: slideInDown 0.8s ease-out; }
+        header p { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; animation: slideInUp 0.8s ease-out 0.2s both; }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        section { margin-bottom: 4rem; }
+        h2 { text-align: center; margin-bottom: 3rem; font-size: 2.5rem; font-weight: 600; background: var(--secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .chart-section { background: var(--bg-card); backdrop-filter: blur(20px); border-radius: var(--radius-xl); padding: 3rem; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.1); animation: fadeInUp 0.8s ease-out; }
+        .chart-container { max-width: 700px; margin: 0 auto; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .card { background: var(--bg-card); backdrop-filter: blur(20px); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: var(--transition); border: 1px solid rgba(255, 255, 255, 0.1); position: relative; animation: fadeInUp 0.8s ease-out var(--delay, 0s) both; }
+        .card:nth-child(1) { --delay: 0.1s; } .card:nth-child(2) { --delay: 0.2s; } .card:nth-child(3) { --delay: 0.3s; }
+        .card:hover { transform: translateY(-10px) scale(1.02); box-shadow: var(--shadow-xl); border-color: rgba(255, 255, 255, 0.2); }
+        .card img { width: 100%; height: 250px; object-fit: cover; transition: var(--transition); }
+        .card:hover img { transform: scale(1.05); }
+        .card h3 { text-align: center; padding: 2rem; margin: 0; font-size: 1.5rem; font-weight: 600; background: var(--primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .detalle-content { display: none; background: var(--bg-card); backdrop-filter: blur(20px); padding: 3rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); margin-top: 3rem; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); animation: modalFadeIn 0.5s ease-out; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .close-btn { position: absolute; top: 2rem; right: 2rem; width: 40px; height: 40px; border-radius: 50%; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--danger); font-size: 1.5rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; z-index: 10; }
+        .close-btn:hover { background: rgba(239, 68, 68, 0.3); transform: scale(1.1); }
+        .detalle-content h2 { margin-bottom: 2rem; text-align: left; font-size: 2.2rem; }
+        .detalle-content h3 { color: var(--text-primary); margin: 2rem 0 1rem 0; font-size: 1.3rem; font-weight: 600; padding-left: 1rem; border-left: 3px solid var(--primary-solid); }
+        .detalle-content p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+        .detalle-content ul { list-style: none; padding: 0; margin: 1.5rem 0; }
+        .detalle-content li { padding: 1rem 1rem 1rem 3rem; margin: 0.8rem 0; border-radius: var(--radius-md); position: relative; }
+        .positive { background: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--success); }
+        .negative { background: rgba(239, 68, 68, 0.1); border-left: 3px solid var(--danger); }
+        .positive::before { content: '✓'; position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--success); font-weight: bold; font-size: 1.2rem; }
+        .negative::before { content: '⚠'; position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--danger); font-weight: bold; font-size: 1.2rem; }
+        .price-box { background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: var(--radius-md); padding: 1.5rem; margin: 2rem 0; text-align: center; }
+        .price-box .price-main { font-size: 2rem; font-weight: 700; background: var(--primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
+        .price-box .price-note { font-size: 1rem; color: var(--text-secondary); }
+        .map-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: var(--primary); color: white; text-decoration: none; border-radius: var(--radius-md); font-weight: 600; font-size: 1rem; transition: var(--transition); box-shadow: var(--shadow-lg); }
+        .map-link:hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }
+        .modern-gallery { margin: 2rem 0; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .gallery-item { position: relative; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: var(--transition); aspect-ratio: 1; }
+        .gallery-item:hover { transform: scale(1.05) translateZ(0); box-shadow: var(--shadow-lg); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .gallery-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); opacity: 0; transition: var(--transition); z-index: 1; }
+        .gallery-item:hover::before { opacity: 1; }
+        .gallery-item::after { content: '🔍'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 2rem; color: white; z-index: 2; transition: var(--transition); }
+        .gallery-item:hover::after { transform: translate(-50%, -50%) scale(1); }
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 1000; backdrop-filter: blur(10px); }
+        .lightbox.active { display: flex; align-items: center; justify-content: center; animation: lightboxFadeIn 0.3s ease-out; }
+        @keyframes lightboxFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .lightbox-content { position: relative; max-width: 90vw; max-height: 90vh; display: flex; align-items: center; justify-content: center; }
+        .lightbox-image { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); animation: lightboxImageIn 0.4s ease-out; }
+        @keyframes lightboxImageIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: var(--transition); z-index: 1001; }
+        .lightbox-nav:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-50%) scale(1.1); }
+        .lightbox-prev { left: 2rem; } .lightbox-next { right: 2rem; }
+        .lightbox-close { position: absolute; top: 2rem; right: 2rem; width: 50px; height: 50px; border-radius: 50%; background: rgba(239, 68, 68, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--danger); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: var(--transition); z-index: 1001; }
+        .lightbox-close:hover { background: rgba(239, 68, 68, 0.3); transform: scale(1.1); }
+        .lightbox-counter { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem; z-index: 1001; }
+        footer { text-align: center; padding: 3rem 2rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 4rem; }
+        footer p { color: var(--text-muted); font-size: 0.9rem; }
+        @media (max-width: 768px) { main { padding: 1rem; } header { padding: 2rem 1rem; } .chart-section, .detalle-content { padding: 2rem 1.5rem; } .cards-container { grid-template-columns: 1fr; gap: 1.5rem; } .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.8rem; } .lightbox-nav { width: 50px; height: 50px; font-size: 1.2rem; } .lightbox-prev { left: 1rem; } .lightbox-next { right: 1rem; } .lightbox-close { top: 1rem; right: 1rem; width: 40px; height: 40px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Paseo fin de año 4to B</h1>
+        <p>Descubre las mejores alternativas para nuestro paseo de fin de año. Cada opción ha sido cuidadosamente seleccionada para garantizar diversión y comodidad para todos.</p>
+    </header>
+
+    <main>
+        <section id="comparacion" class="chart-section">
+            <h2>Comparación Visual</h2>
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </section>
+
+        <section id="alternativas">
+            <h2>Nuestras Alternativas</h2>
+            <div class="cards-container">
+                <div class="card" data-target="detalle-opcion1">
+                    <img src="Images/opcion1-principal.jpg" alt="La Ponderosa" loading="lazy">
+                    <h3>La Ponderosa</h3>
+                </div>
+                <div class="card" data-target="detalle-opcion2">
+                    <img src="Images/opcion2-principal.jpeg" alt="Parcela Talagante" loading="lazy">
+                    <h3>Parcela Talagante</h3>
+                </div>
+                <div class="card" data-target="detalle-opcion3">
+                    <img src="Images/opcion3-principal.jpeg" alt="Las Vizcachas" loading="lazy">
+                    <h3>Las Vizcachas</h3>
+                </div>
+                <div class="card" data-target="detalle-opcion4">
+                    <img src="Images/opcion4-principal.jpg" alt="Casa Piedra Vieja" loading="lazy">
+                    <h3>Casa Piedra Vieja</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="detalles">
+            <div id="detalle-opcion1" class="detalle-content">
+                <button class="close-btn">×</button>
+                <h2>La Ponderosa</h2>
+                <div class="modern-gallery">
+                    <div class="gallery-grid">
+                        <div class="gallery-item" data-src="Images/opcion1-detalle1.jpg"><img src="Images/opcion1-detalle1.jpg" alt="La Ponderosa 1"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle2.jpg"><img src="Images/opcion1-detalle2.jpg" alt="La Ponderosa 2"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle3.jpg"><img src="Images/opcion1-detalle3.jpg" alt="La Ponderosa 3"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle4.jpg"><img src="Images/opcion1-detalle4.jpg" alt="La Ponderosa 4"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle5.jpg"><img src="Images/opcion1-detalle5.jpg" alt="La Ponderosa 5"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle6.jpg"><img src="Images/opcion1-detalle6.jpg" alt="La Ponderosa 6"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle7.jpg"><img src="Images/opcion1-detalle7.jpg" alt="La Ponderosa 7"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle8.jpg"><img src="Images/opcion1-detalle8.jpg" alt="La Ponderosa 8"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle9.jpg"><img src="Images/opcion1-detalle9.jpg" alt="La Ponderosa 9"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle10.jpg"><img src="Images/opcion1-detalle10.jpg" alt="La Ponderosa 10"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle11.jpg"><img src="Images/opcion1-detalle11.jpg" alt="La Ponderosa 11"></div>
+                        <div class="gallery-item" data-src="Images/opcion1-detalle12.jpg"><img src="Images/opcion1-detalle12.jpg" alt="La Ponderosa 12"></div>
+                    </div>
+                </div>
+                <h3>Descripción</h3>
+                <p>Parcela La Ponderosa es un centro de eventos ubicado en Valdivia de Paine, Buin, que se arrienda de forma exclusiva para un solo grupo, garantizando total privacidad. El arriendo incluye acceso a completas instalaciones: un amplio salón de 240 m² con mesas y sillas, una piscina de 12x6 metros, y múltiples baños y duchas. Para la diversión, cuenta con cancha de baby fútbol techada, mesas de ping pong, taca-taca, y camas saltarinas. Para los asados, hay dos quinchos equipados con parrillas y hornos de barro, además de una cocina con cooler y congeladora. El recinto ofrece amplias zonas verdes y estacionamiento interior seguro.</p>
+                <h3>Puntos Destacados</h3>
+                <ul>
+                    <li class="positive">Entretención y Deporte Incluido: Piscina, cancha techada, ping-pong, taca-taca y camas elásticas.</li>
+                    <li class="positive">Quinchos y Cocina Equipados: Dos quinchos con parrillas, hornos de barro y cocina equipada.</li>
+                    <li class="positive">Exclusividad y Privacidad: Arriendo exclusivo para el grupo, sin compartir instalaciones.</li>
+                    <li class="positive">Amplio Salón y Estacionamiento: Salón para +160 personas y estacionamiento para +50 autos.</li>
+                    <li class="negative">Cocina sin Vajilla: Debes traer tus propios platos, vasos y cubiertos.</li>
+                </ul>
+                <h3>Precio</h3>
+                <div class="price-box">
+                    <div class="price-main">$400.000</div>
+                    <div class="price-note">hasta 50 personas. Adicional >3 años: $5.000 c/u.</div>
+                </div>
+                <a href="https://www.google.com/maps?ll=-33.80706,-70.853146&z=14&t=m&hl=es-ES&gl=US&mapclient=embed&q=Los+Aromos+327+Valdivia+de+Paine,+Buin+Regi%C3%B3n+Metropolitana" target="_blank" class="map-link">📍 Ver ubicación en Google Maps</a>
+            </div>
+
+            <div id="detalle-opcion2" class="detalle-content">
+                 <button class="close-btn">×</button>
+                <h2>Parcela Talagante</h2>
+                <div class="modern-gallery">
+                    <div class="gallery-grid">
+                        <div class="gallery-item" data-src="Images/opcion2-detalle1.jpeg"><img src="Images/opcion2-detalle1.jpeg" alt="Talagante 1"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle2.jpeg"><img src="Images/opcion2-detalle2.jpeg" alt="Talagante 2"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle3.jpeg"><img src="Images/opcion2-detalle3.jpeg" alt="Talagante 3"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle4.jpeg"><img src="Images/opcion2-detalle4.jpeg" alt="Talagante 4"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle5.jpeg"><img src="Images/opcion2-detalle5.jpeg" alt="Talagante 5"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle6.jpeg"><img src="Images/opcion2-detalle6.jpeg" alt="Talagante 6"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle7.jpeg"><img src="Images/opcion2-detalle7.jpeg" alt="Talagante 7"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle8.jpeg"><img src="Images/opcion2-detalle8.jpeg" alt="Talagante 8"></div>
+                        <div class="gallery-item" data-src="Images/opcion2-detalle9.jpeg"><img src="Images/opcion2-detalle9.jpeg" alt="Talagante 9"></div>
+                    </div>
+                </div>
+                <h3>Descripción</h3>
+                <p>Esta parcela en Talagante se arrienda de forma exclusiva para paseos familiares, ofreciendo un ambiente tranquilo ideal para niños. Su principal atractivo son las piscinas: una grande para adultos y otra separada de solo 50 cm de profundidad para niños pequeños. El arriendo incluye el uso de un quincho equipado con lavaplatos, refrigerador, congeladora, horno de barro y parrillas. Para la entretención, dispone de juegos infantiles y una mini cancha. No incluye gas para el quincho ni loza.</p>
+                <h3>Puntos Destacados</h3>
+                <ul>
+                    <li class="positive">Piscinas Seguras para Todos: Piscina para adultos y otra separada de baja profundidad.</li>
+                    <li class="positive">Precio Familiar: El cobro es por persona y los niños menores de 5 años tienen entrada liberada.</li>
+                    <li class="positive">Quincho y Parrillas: Quincho equipado con refrigerador y horno de barro.</li>
+                    <li class="negative">Restricciones de Ambiente: No se permite el ingreso de mascotas ni parlantes con música exagerada.</li>
+                    <li class="negative">No Incluye Insumos Básicos: Se debe llevar loza y gas para el quincho.</li>
+                </ul>
+                <h3>Precio</h3>
+                <div class="price-box">
+                    <div class="price-main">$8.500</div>
+                    <div class="price-note">por persona. Menores de 5 años no pagan.</div>
+                </div>
+                 <a href="https://www.google.com/maps/place/Cam.+Los+Perros+4087,+Talagante,+Regi%C3%B3n+Metropolitana/@-33.6885593,-70.8639696,14z/data=!4m5!3m4!1s0x9662e1d12d35be69:0xf3e37f23ac5bc97!8m2!3d-33.6912463!4d-70.8670488?entry=ttu&g_ep=EgoyMDI1MDYwNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-link">📍 Ver ubicación en Google Maps</a>
+            </div>
+            
+            <div id="detalle-opcion3" class="detalle-content">
+                <button class="close-btn">×</button>
+                <h2>Las Vizcachas</h2>
+                 <div class="modern-gallery">
+                    <div class="gallery-grid">
+                        <div class="gallery-item" data-src="Images/opcion3-detalle1.jpeg"><img src="Images/opcion3-detalle1.jpeg" alt="Vizcachas 1"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle2.jpeg"><img src="Images/opcion3-detalle2.jpeg" alt="Vizcachas 2"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle3.jpeg"><img src="Images/opcion3-detalle3.jpeg" alt="Vizcachas 3"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle4.jpeg"><img src="Images/opcion3-detalle4.jpeg" alt="Vizcachas 4"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle5.jpeg"><img src="Images/opcion3-detalle5.jpeg" alt="Vizcachas 5"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle6.jpeg"><img src="Images/opcion3-detalle6.jpeg" alt="Vizcachas 6"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle7.jpeg"><img src="Images/opcion3-detalle7.jpeg" alt="Vizcachas 7"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle8.jpeg"><img src="Images/opcion3-detalle8.jpeg" alt="Vizcachas 8"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle9.jpeg"><img src="Images/opcion3-detalle9.jpeg" alt="Vizcachas 9"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle10.jpeg"><img src="Images/opcion3-detalle10.jpeg" alt="Vizcachas 10"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle11.jpeg"><img src="Images/opcion3-detalle11.jpeg" alt="Vizcachas 11"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle12.jpeg"><img src="Images/opcion3-detalle12.jpeg" alt="Vizcachas 12"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle13.jpeg"><img src="Images/opcion3-detalle13.jpeg" alt="Vizcachas 13"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle14.jpeg"><img src="Images/opcion3-detalle14.jpeg" alt="Vizcachas 14"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle15.jpeg"><img src="Images/opcion3-detalle15.jpeg" alt="Vizcachas 15"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle16.jpeg"><img src="Images/opcion3-detalle16.jpeg" alt="Vizcachas 16"></div>
+                        <div class="gallery-item" data-src="Images/opcion3-detalle17.jpeg"><img src="Images/opcion3-detalle17.jpeg" alt="Vizcachas 17"></div>
+                    </div>
+                </div>
+                <h3>Descripción</h3>
+                <p>Este lugar ofrece el arriendo de un amplio sector enfocado en la entretención. La principal atracción es su piscina con tobogán. La oferta de juegos es muy variada: cama elástica, juegos infantiles, taca-taca, mesa de ping-pong, mesa de pool y una máquina de videojuegos arcade con más de 1.000 títulos. Para las comidas, cuenta con un quincho para asados, refrigerador y congeladora. Se incluye un parlante de música. El recinto dispone de un solo baño para todos los invitados.</p>
+                <h3>Puntos Destacados</h3>
+                <ul>
+                    <li class="positive">Máxima Entretención: Piscina con tobogán, cama elástica, taca-taca, pool y máquina de arcade.</li>
+                    <li class="positive">Música Incluida: El arriendo incluye un parlante de música sin restricciones.</li>
+                    <li class="positive">Precio Flexible: El valor base cubre 20 personas, permitiendo añadir más invitados con un costo adicional.</li>
+                    <li class="negative">Un Solo Baño: El recinto cuenta con un único baño para todos los asistentes.</li>
+                </ul>
+                <h3>Precio</h3>
+                <div class="price-box">
+                    <div class="price-main">$250.000</div>
+                    <div class="price-note">hasta 20 personas. Adicional >3 años: $10.000 c/u.</div>
+                </div>
+                 <a href="https://www.google.com/maps/place/Avenida+San+Jos%C3%A9+de+Maipo+6997,+Puente+Alto,+Regi%C3%B3n+Metropolitana/@-33.5975118,-70.5127663,17z/data=!4m6!3m5!1s0x9662d5ede2adfe35:0xd1d3d00068c6c165!8m2!3d-33.5980895!4d-70.5118532!16s%2Fg%2F11lh6gyp7k?entry=ttu&g_ep=EgoyMDI1MDYwNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-link">📍 Ver ubicación en Google Maps</a>
+            </div>
+
+            <div id="detalle-opcion4" class="detalle-content">
+                <button class="close-btn">×</button>
+                <h2>Casa Piedra Vieja</h2>
+                <div class="modern-gallery">
+                    <div class="gallery-grid">
+                        <div class="gallery-item" data-src="Images/opcion4-detalle1.jpg"><img src="Images/opcion4-detalle1.jpg" alt="Casa Piedra Vieja 1"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle2.jpg"><img src="Images/opcion4-detalle2.jpg" alt="Casa Piedra Vieja 2"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle3.jpg"><img src="Images/opcion4-detalle3.jpg" alt="Casa Piedra Vieja 3"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle4.jpg"><img src="Images/opcion4-detalle4.jpg" alt="Casa Piedra Vieja 4"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle5.jpg"><img src="Images/opcion4-detalle5.jpg" alt="Casa Piedra Vieja 5"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle6.jpg"><img src="Images/opcion4-detalle6.jpg" alt="Casa Piedra Vieja 6"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle7.jpg"><img src="Images/opcion4-detalle7.jpg" alt="Casa Piedra Vieja 7"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle8.jpg"><img src="Images/opcion4-detalle8.jpg" alt="Casa Piedra Vieja 8"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle9.jpg"><img src="Images/opcion4-detalle9.jpg" alt="Casa Piedra Vieja 9"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle10.jpg"><img src="Images/opcion4-detalle10.jpg" alt="Casa Piedra Vieja 10"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle11.jpg"><img src="Images/opcion4-detalle11.jpg" alt="Casa Piedra Vieja 11"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle12.jpg"><img src="Images/opcion4-detalle12.jpg" alt="Casa Piedra Vieja 12"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle13.jpg"><img src="Images/opcion4-detalle13.jpg" alt="Casa Piedra Vieja 13"></div>
+                        <div class="gallery-item" data-src="Images/opcion4-detalle14.jpg"><img src="Images/opcion4-detalle14.jpg" alt="Casa Piedra Vieja 14"></div>
+                    </div>
+                </div>
+                <h3>Descripción</h3>
+                <p>Casa Piedra Vieja, ubicada en la comuna de Padre Hurtado, se presenta como un centro de eventos ideal para paseos de curso y celebraciones, aunque es fundamental conocer sus normativas. El valor del arriendo te da acceso a sus instalaciones, que incluyen una impresionante piscina de 15x17 metros y amplias áreas verdes con sombra. Sin embargo, el uso de la piscina es de estricta responsabilidad de los asistentes, y los niños deben ser supervisados por un adulto en todo momento, ya que el recinto no cuenta con salvavidas ni kit de primeros auxilios. Para la comida, dispone de una parrilla de 4 metros y horno de barro, además de una cocina industrial. Es importante considerar que el uso del gas de la cocina tiene un costo adicional de $10.000 (o puedes llevar tu propio balón) y el arriendo no incluye la vajilla. Al planificar tu evento, debes tener en cuenta que toda persona que ingresa al recinto a partir de los 3 años debe pagar su entrada, incluyendo personal de servicio (DJ, garzones, etc.) y los propios festejados. Además, se debe traer papel higiénico y bolsas de basura, ya que no son proporcionados. El recinto debe entregarse limpio y ordenado al finalizar la jornada, y la música debe mantenerse a un volumen moderado. Los horarios de arriendo son estrictos, y cualquier tiempo extra generará un costo adicional.</p>
+                <h3>Puntos Destacados</h3>
+                <ul>
+                    <li class="positive">Piscina gigante de 15x17 metros, cancha de fútbol y juegos infantiles.</li>
+                    <li class="positive">Amplias áreas verdes con quinchos, parrilla de 4 metros y horno de barro.</li>
+                    <li class="positive">Permite llevar tu propia comida y bebestibles.</li>
+                    <li class="positive">Estacionamiento privado con gran capacidad.</li>
+                    <li class="negative">Importante: Toda persona paga entrada desde los 3 años (invitados, personal, festejados).</li>
+                    <li class="negative">No incluye papel higiénico, vajilla, ni kit de primeros auxilios.</li>
+                    <li class="negative">El uso del gas de cocina y la instalación de juegos inflables tienen un costo adicional.</li>
+                    <li class="negative">El cuidado en la piscina es 100% responsabilidad de los adultos a cargo del grupo.</li>
+                </ul>
+                <h3>Precio</h3>
+                <div class="price-box">
+                    <div class="price-main">$160.000</div>
+                    <div class="price-note">hasta 20 personas, adicional 8000 por persona mayor a 3 años</div>
+                </div>
+                <a href="https://maps.google.com/?q=-33.554325,-70.894203" target="_blank" class="map-link">📍 Ver ubicación en Google Maps</a>
+            </div>
+        </section>
+    </main>
+
+    <div class="lightbox">
+        <button class="lightbox-close">×</button>
+        <button class="lightbox-nav lightbox-prev">‹</button>
+        <div class="lightbox-content">
+            <img src="" class="lightbox-image" alt="Imagen ampliada">
+        </div>
+        <button class="lightbox-nav lightbox-next">›</button>
+        <div class="lightbox-counter"></div>
+    </div>
+
+    <footer>
+        <p>💜 Página de propuestas creada para el 4to B</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartColors = {
+                primary: 'rgb(102, 126, 234)', primaryTransparent: 'rgba(102, 126, 234, 0.2)',
+                secondary: 'rgb(245, 87, 108)', secondaryTransparent: 'rgba(245, 87, 108, 0.2)',
+                tertiary: 'rgb(75, 192, 192)', tertiaryTransparent: 'rgba(75, 192, 192, 0.2)',
+                quaternary: 'rgb(22, 163, 74)', quaternaryTransparent: 'rgba(22, 163, 74, 0.2)', // Nuevo color para la opción 4
+                textColor: 'rgba(255, 255, 255, 0.8)', gridColor: 'rgba(255, 255, 255, 0.1)'
+            };
+            const data = {
+                labels: ['Costo', 'Cercanía', 'Comodidad', 'Estacionamientos', 'Entretención'],
+                datasets: [
+                    { label: 'La Ponderosa', data: [15, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.primaryTransparent, borderColor: chartColors.primary, pointBackgroundColor: chartColors.primary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.primary, borderWidth: 3 },
+                    { label: 'Parcela Talagante', data: [9.75, 9.9, 12, 12, 12], fill: true, backgroundColor: chartColors.secondaryTransparent, borderColor: chartColors.secondary, pointBackgroundColor: chartColors.secondary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.secondary, borderWidth: 3 },
+                    { label: 'Las Vizcachas', data: [7.5, 12.5, 10.5, 6, 10.5], fill: true, backgroundColor: chartColors.tertiaryTransparent, borderColor: chartColors.tertiary, pointBackgroundColor: chartColors.tertiary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.tertiary, borderWidth: 3 },
+                    // NUEVOS DATOS DEL GRÁFICO AÑADIDOS
+                    { label: 'Casa Piedra Vieja', data: [10.5, 9.6, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quaternaryTransparent, borderColor: chartColors.quaternary, pointBackgroundColor: chartColors.quaternary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quaternary, borderWidth: 3 }
+                ]
+            };
+            const config = {
+                type: 'radar', data: data,
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: chartColors.textColor, font: { size: 14, family: 'Inter' } } } },
+                    scales: { r: { angleLines: { color: chartColors.gridColor }, grid: { color: chartColors.gridColor }, pointLabels: { color: chartColors.textColor, font: { size: 14, weight: '500', family: 'Inter' } }, ticks: { display: false, count: 5 } } }
+                }
+            };
+            try { new Chart(document.getElementById('radarChart').getContext('2d'), config); } catch (e) { console.error("Error al inicializar el gráfico:", e); }
+            
+            const cards = document.querySelectorAll('.card');
+            const detailSections = document.querySelectorAll('.detalle-content');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const targetId = card.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        detailSections.forEach(section => section.style.display = 'none');
+                        targetElement.style.display = 'block';
+                        document.getElementById('detalles').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            document.querySelectorAll('.close-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    button.closest('.detalle-content').style.display = 'none';
+                });
+            });
+
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImage = lightbox.querySelector('.lightbox-image');
+            const lightboxClose = lightbox.querySelector('.lightbox-close');
+            const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+            const lightboxNext = lightbox.querySelector('.lightbox-next');
+            const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+
+            let currentGalleryItems = [];
+            let currentIndex = 0;
+
+            document.querySelectorAll('.gallery-grid').forEach(grid => {
+                const items = grid.querySelectorAll('.gallery-item');
+                items.forEach((item, index) => {
+                    item.addEventListener('click', () => {
+                        currentGalleryItems = Array.from(items);
+                        currentIndex = index;
+                        openLightbox();
+                    });
+                });
+            });
+            
+            function openLightbox() {
+                if (currentGalleryItems.length === 0) return;
+                const item = currentGalleryItems[currentIndex];
+                const imgSrc = item.getAttribute('data-src');
+                lightboxImage.setAttribute('src', imgSrc);
+                lightboxCounter.textContent = `${currentIndex + 1} / ${currentGalleryItems.length}`;
+                lightbox.classList.add('active');
+            }
+
+            function closeLightbox() { lightbox.classList.remove('active'); }
+            function showPrevImage() { currentIndex = (currentIndex > 0) ? currentIndex - 1 : currentGalleryItems.length - 1; openLightbox(); }
+            function showNextImage() { currentIndex = (currentIndex < currentGalleryItems.length - 1) ? currentIndex + 1 : 0; openLightbox(); }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxPrev.addEventListener('click', showPrevImage);
+            lightboxNext.addEventListener('click', showNextImage);
+
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.classList.contains('active')) {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') showPrevImage();
+                    if (e.key === 'ArrowRight') showNextImage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
