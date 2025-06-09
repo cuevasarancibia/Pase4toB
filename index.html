@@ -341,108 +341,130 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const chartColors = {
-                primary: 'rgb(102, 126, 234)', primaryTransparent: 'rgba(102, 126, 234, 0.2)',
-                secondary: 'rgb(245, 87, 108)', secondaryTransparent: 'rgba(245, 87, 108, 0.2)',
-                tertiary: 'rgb(75, 192, 192)', tertiaryTransparent: 'rgba(75, 192, 192, 0.2)',
-                quaternary: 'rgb(22, 163, 74)', quaternaryTransparent: 'rgba(22, 163, 74, 0.2)',
-                quinary: 'rgb(234, 179, 8)', quaternaryTransparent: 'rgba(234, 179, 8, 0.2)', // Nuevo color para la opción 5
-                textColor: 'rgba(255, 255, 255, 0.8)', gridColor: 'rgba(255, 255, 255, 0.1)'
-            };
-            const data = {
-                labels: ['Costo', 'Cercanía', 'Comodidad', 'Estacionamientos', 'Entretención'],
-                datasets: [
-                    { label: 'La Ponderosa', data: [15, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.primaryTransparent, borderColor: chartColors.primary, pointBackgroundColor: chartColors.primary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.primary, borderWidth: 3 },
-                    { label: 'Parcela Talagante', data: [9.75, 9.9, 12, 12, 12], fill: true, backgroundColor: chartColors.secondaryTransparent, borderColor: chartColors.secondary, pointBackgroundColor: chartColors.secondary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.secondary, borderWidth: 3 },
-                    { label: 'Las Vizcachas', data: [7.5, 12.5, 10.5, 6, 10.5], fill: true, backgroundColor: chartColors.tertiaryTransparent, borderColor: chartColors.tertiary, pointBackgroundColor: chartColors.tertiary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.tertiary, borderWidth: 3 },
-                    { label: 'Casa Piedra Vieja', data: [10.5, 9.6, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quaternaryTransparent, borderColor: chartColors.quaternary, pointBackgroundColor: chartColors.quaternary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quaternary, borderWidth: 3 },
-                    // NUEVOS DATOS DEL GRÁFICO AÑADIDOS
-                    { label: 'Pisci Pirque', data: [10.5, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quinaryTransparent, borderColor: chartColors.quinary, pointBackgroundColor: chartColors.quinary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quinary, borderWidth: 3 }
-                ]
-            };
-            const config = {
-                type: 'radar', data: data,
-                options: {
-                    responsive: true,
-                    plugins: { legend: { labels: { color: chartColors.textColor, font: { size: 14, family: 'Inter' } } } },
-                    scales: { r: { 
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- NUEVO: LÓGICA PARA TAMAÑO DE FUENTE RESPONSIVO ---
+        const isMobile = window.innerWidth < 768;
+        const legendFontSize = isMobile ? 11 : 14; // Tamaño para la leyenda
+        const pointLabelFontSize = isMobile ? 12 : 14; // Tamaño para "Costo", "Cercanía", etc.
+
+        const chartColors = {
+            primary: 'rgb(102, 126, 234)', primaryTransparent: 'rgba(102, 126, 234, 0.2)',
+            secondary: 'rgb(245, 87, 108)', secondaryTransparent: 'rgba(245, 87, 108, 0.2)',
+            tertiary: 'rgb(75, 192, 192)', tertiaryTransparent: 'rgba(75, 192, 192, 0.2)',
+            quaternary: 'rgb(22, 163, 74)', quaternaryTransparent: 'rgba(22, 163, 74, 0.2)',
+            quinary: 'rgb(234, 179, 8)', quinaryTransparent: 'rgba(234, 179, 8, 0.2)',
+            textColor: 'rgba(255, 255, 255, 0.8)', gridColor: 'rgba(255, 255, 255, 0.1)'
+        };
+        const data = {
+            labels: ['Costo', 'Cercanía', 'Comodidad', 'Estacionamientos', 'Entretención'],
+            datasets: [
+                { label: 'La Ponderosa', data: [15, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.primaryTransparent, borderColor: chartColors.primary, pointBackgroundColor: chartColors.primary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.primary, borderWidth: 3 },
+                { label: 'Parcela Talagante', data: [9.75, 9.9, 12, 12, 12], fill: true, backgroundColor: chartColors.secondaryTransparent, borderColor: chartColors.secondary, pointBackgroundColor: chartColors.secondary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.secondary, borderWidth: 3 },
+                { label: 'Las Vizcachas', data: [7.5, 12.5, 10.5, 6, 10.5], fill: true, backgroundColor: chartColors.tertiaryTransparent, borderColor: chartColors.tertiary, pointBackgroundColor: chartColors.tertiary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.tertiary, borderWidth: 3 },
+                { label: 'Casa Piedra Vieja', data: [10.5, 9.6, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quaternaryTransparent, borderColor: chartColors.quaternary, pointBackgroundColor: chartColors.quaternary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quaternary, borderWidth: 3 },
+                { label: 'Pisci Pirque', data: [10.5, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quinaryTransparent, borderColor: chartColors.quinary, pointBackgroundColor: chartColors.quinary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quinary, borderWidth: 3 }
+            ]
+        };
+        const config = {
+            type: 'radar', data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: chartColors.textColor,
+                            font: {
+                                size: legendFontSize, // APLICADO
+                                family: 'Inter'
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: { 
                         angleLines: { color: chartColors.gridColor }, 
                         grid: { color: chartColors.gridColor }, 
-                        pointLabels: { color: chartColors.textColor, font: { size: 14, weight: '500', family: 'Inter' } }, 
+                        pointLabels: {
+                            color: chartColors.textColor,
+                            font: {
+                                size: pointLabelFontSize, // APLICADO
+                                weight: '500',
+                                family: 'Inter'
+                            }
+                        }, 
                         ticks: { display: false, count: 5 } 
-                    } }
-                }
-            };
-            try { new Chart(document.getElementById('radarChart').getContext('2d'), config); } catch (e) { console.error("Error al inicializar el gráfico:", e); }
-            
-            const cards = document.querySelectorAll('.card');
-            const detailSections = document.querySelectorAll('.detalle-content');
-            
-            cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const targetId = card.getAttribute('data-target');
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        detailSections.forEach(section => section.style.display = 'none');
-                        targetElement.style.display = 'block';
-                        document.getElementById('detalles').scrollIntoView({ behavior: 'smooth' });
                     }
-                });
-            });
-
-            document.querySelectorAll('.close-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    button.closest('.detalle-content').style.display = 'none';
-                });
-            });
-
-            const lightbox = document.querySelector('.lightbox');
-            const lightboxImage = lightbox.querySelector('.lightbox-image');
-            const lightboxClose = lightbox.querySelector('.lightbox-close');
-            const lightboxPrev = lightbox.querySelector('.lightbox-prev');
-            const lightboxNext = lightbox.querySelector('.lightbox-next');
-            const lightboxCounter = lightbox.querySelector('.lightbox-counter');
-
-            let currentGalleryItems = [];
-            let currentIndex = 0;
-
-            document.querySelectorAll('.gallery-grid').forEach(grid => {
-                const items = grid.querySelectorAll('.gallery-item');
-                items.forEach((item, index) => {
-                    item.addEventListener('click', () => {
-                        currentGalleryItems = Array.from(items);
-                        currentIndex = index;
-                        openLightbox();
-                    });
-                });
-            });
-            
-            function openLightbox() {
-                if (currentGalleryItems.length === 0) return;
-                const item = currentGalleryItems[currentIndex];
-                const imgSrc = item.getAttribute('data-src');
-                lightboxImage.setAttribute('src', imgSrc);
-                lightboxCounter.textContent = `${currentIndex + 1} / ${currentGalleryItems.length}`;
-                lightbox.classList.add('active');
+                }
             }
-
-            function closeLightbox() { lightbox.classList.remove('active'); }
-            function showPrevImage() { currentIndex = (currentIndex > 0) ? currentIndex - 1 : currentGalleryItems.length - 1; openLightbox(); }
-            function showNextImage() { currentIndex = (currentIndex < currentGalleryItems.length - 1) ? currentIndex + 1 : 0; openLightbox(); }
-
-            lightboxClose.addEventListener('click', closeLightbox);
-            lightboxPrev.addEventListener('click', showPrevImage);
-            lightboxNext.addEventListener('click', showNextImage);
-
-            document.addEventListener('keydown', (e) => {
-                if (lightbox.classList.contains('active')) {
-                    if (e.key === 'Escape') closeLightbox();
-                    if (e.key === 'ArrowLeft') showPrevImage();
-                    if (e.key === 'ArrowRight') showNextImage();
+        };
+        try { new Chart(document.getElementById('radarChart').getContext('2d'), config); } catch (e) { console.error("Error al inicializar el gráfico:", e); }
+        
+        const cards = document.querySelectorAll('.card');
+        const detailSections = document.querySelectorAll('.detalle-content');
+        
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetId = card.getAttribute('data-target');
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    detailSections.forEach(section => section.style.display = 'none');
+                    targetElement.style.display = 'block';
+                    document.getElementById('detalles').scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
-    </script>
-</body>
-</html>
+
+        document.querySelectorAll('.close-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.detalle-content').style.display = 'none';
+            });
+        });
+
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImage = document.querySelector('.lightbox-image');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+        const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+        const lightboxNext = lightbox.querySelector('.lightbox-next');
+        const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+
+        let currentGalleryItems = [];
+        let currentIndex = 0;
+
+        document.querySelectorAll('.gallery-grid').forEach(grid => {
+            const items = grid.querySelectorAll('.gallery-item');
+            items.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentGalleryItems = Array.from(items);
+                    currentIndex = index;
+                    openLightbox();
+                });
+            });
+        });
+        
+        function openLightbox() {
+            if (currentGalleryItems.length === 0) return;
+            const item = currentGalleryItems[currentIndex];
+            const imgSrc = item.getAttribute('data-src');
+            lightboxImage.setAttribute('src', imgSrc);
+            lightboxCounter.textContent = `${currentIndex + 1} / ${currentGalleryItems.length}`;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() { lightbox.classList.remove('active'); }
+        function showPrevImage() { currentIndex = (currentIndex > 0) ? currentIndex - 1 : currentGalleryItems.length - 1; openLightbox(); }
+        function showNextImage() { currentIndex = (currentIndex < currentGalleryItems.length - 1) ? currentIndex + 1 : 0; openLightbox(); }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', showPrevImage);
+        lightboxNext.addEventListener('click', showNextImage);
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') showPrevImage();
+                if (e.key === 'ArrowRight') showNextImage();
+            }
+        });
+    });
+</script>
