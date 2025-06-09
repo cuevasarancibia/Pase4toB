@@ -340,13 +340,12 @@
         <p>💜 Página de propuestas creada para el 4to B</p>
     </footer>
 
-    <script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
         
-        // --- NUEVO: LÓGICA PARA TAMAÑO DE FUENTE RESPONSIVO ---
         const isMobile = window.innerWidth < 768;
-        const legendFontSize = isMobile ? 11 : 14; // Tamaño para la leyenda
-        const pointLabelFontSize = isMobile ? 12 : 14; // Tamaño para "Costo", "Cercanía", etc.
+        const legendFontSize = isMobile ? 11 : 14;
+        const pointLabelFontSize = isMobile ? 12 : 14;
 
         const chartColors = {
             primary: 'rgb(102, 126, 234)', primaryTransparent: 'rgba(102, 126, 234, 0.2)',
@@ -359,25 +358,29 @@
         const data = {
             labels: ['Costo', 'Cercanía', 'Comodidad', 'Estacionamientos', 'Entretención'],
             datasets: [
-                { label: 'La Ponderosa', data: [15, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.primaryTransparent, borderColor: chartColors.primary, pointBackgroundColor: chartColors.primary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.primary, borderWidth: 3 },
-                { label: 'Parcela Talagante', data: [9.75, 9.9, 12, 12, 12], fill: true, backgroundColor: chartColors.secondaryTransparent, borderColor: chartColors.secondary, pointBackgroundColor: chartColors.secondary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.secondary, borderWidth: 3 },
-                { label: 'Las Vizcachas', data: [7.5, 12.5, 10.5, 6, 10.5], fill: true, backgroundColor: chartColors.tertiaryTransparent, borderColor: chartColors.tertiary, pointBackgroundColor: chartColors.tertiary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.tertiary, borderWidth: 3 },
-                { label: 'Casa Piedra Vieja', data: [10.5, 9.6, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quaternaryTransparent, borderColor: chartColors.quaternary, pointBackgroundColor: chartColors.quaternary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quaternary, borderWidth: 3 },
-                { label: 'Pisci Pirque', data: [10.5, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quinaryTransparent, borderColor: chartColors.quinary, pointBackgroundColor: chartColors.quinary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quinary, borderWidth: 3 }
+                { label: 'Ponderosa', data: [15, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.primaryTransparent, borderColor: chartColors.primary, pointBackgroundColor: chartColors.primary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.primary, borderWidth: 3 },
+                { label: 'Talagante', data: [9.75, 9.9, 12, 12, 12], fill: true, backgroundColor: chartColors.secondaryTransparent, borderColor: chartColors.secondary, pointBackgroundColor: chartColors.secondary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.secondary, borderWidth: 3 },
+                { label: 'Vizcachas', data: [7.5, 12.15, 10.5, 6, 10.5], fill: true, backgroundColor: chartColors.tertiaryTransparent, borderColor: chartColors.tertiary, pointBackgroundColor: chartColors.tertiary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.tertiary, borderWidth: 3 },
+                { label: 'Piedra Vieja', data: [10.5, 9.6, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quaternaryTransparent, borderColor: chartColors.quaternary, pointBackgroundColor: chartColors.quaternary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quaternary, borderWidth: 3 },
+                { label: 'Pirque', data: [10.5, 9.15, 13.5, 15, 13.5], fill: true, backgroundColor: chartColors.quinaryTransparent, borderColor: chartColors.quinary, pointBackgroundColor: chartColors.quinary, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: chartColors.quinary, borderWidth: 3 }
             ]
         };
         const config = {
             type: 'radar', data: data,
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         labels: {
                             color: chartColors.textColor,
                             font: {
-                                size: legendFontSize, // APLICADO
+                                size: legendFontSize,
                                 family: 'Inter'
-                            }
+                            },
+                            boxWidth: 12, // Ancho del cuadro de color
+                            boxHeight: 12, // Alto del cuadro de color
+                            padding: isMobile ? 8 : 10 // Espacio entre items de la leyenda
                         }
                     }
                 },
@@ -388,18 +391,20 @@
                         pointLabels: {
                             color: chartColors.textColor,
                             font: {
-                                size: pointLabelFontSize, // APLICADO
+                                size: pointLabelFontSize,
                                 weight: '500',
                                 family: 'Inter'
                             }
                         }, 
-                        ticks: { display: false, count: 5 } 
+                        ticks: { display: false, count: 5 },
+                        suggestedMax: 16
                     }
                 }
             }
         };
         try { new Chart(document.getElementById('radarChart').getContext('2d'), config); } catch (e) { console.error("Error al inicializar el gráfico:", e); }
         
+        // El resto del script para las tarjetas y el lightbox no cambia
         const cards = document.querySelectorAll('.card');
         const detailSections = document.querySelectorAll('.detalle-content');
         
@@ -422,7 +427,7 @@
         });
 
         const lightbox = document.querySelector('.lightbox');
-        const lightboxImage = document.querySelector('.lightbox-image');
+        const lightboxImage = lightbox.querySelector('.lightbox-image');
         const lightboxClose = lightbox.querySelector('.lightbox-close');
         const lightboxPrev = lightbox.querySelector('.lightbox-prev');
         const lightboxNext = lightbox.querySelector('.lightbox-next');
